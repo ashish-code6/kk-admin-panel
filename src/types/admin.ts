@@ -65,11 +65,17 @@ export type AdminBanner = {
   updatedAt: string;
 };
 
+export type PujaKitItem = {
+  item: string;
+  quantity: string;
+};
+
 export type AdminPujaKit = {
   id: string;
   name: string;
   description: string;
   includes: string;
+  kitItems: PujaKitItem[];
   price: number;
   originalPrice: number | null;
   rating: number | null;

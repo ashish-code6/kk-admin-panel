@@ -329,6 +329,28 @@ td { height: 61px; padding: 8px 18px; border-top: 1px solid #f0f1f4; color: #646
 .puja-kit-field textarea { width: 100%; min-width: 0; border: 1px solid #e4e6eb; border-radius: 7px; outline: 0; padding: 9px; color: var(--text); font: 11px/1.5 Arial, Helvetica, sans-serif; resize: vertical; }
 .puja-kit-field textarea:focus { border-color: #9c5556; box-shadow: 0 0 0 3px #7a202510; }
 .puja-kit-field small { color: var(--muted); font-size: 9px; font-weight: 400; }
+.puja-kit-items-editor { display: grid; min-width: 0; gap: 9px; margin-bottom: 16px; }
+.puja-kit-items-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.puja-kit-items-heading strong,.puja-kit-items-heading small { display: block; }
+.puja-kit-items-heading strong { color: #343943; font-size: 12px; }
+.puja-kit-items-heading small { margin-top: 4px; color: var(--muted); font-size: 10px; font-weight: 400; }
+.puja-kit-items-heading>button { display: inline-flex; min-height: 34px; flex: 0 0 auto; align-items: center; justify-content: center; gap: 5px; border: 1px solid var(--brand); border-radius: 6px; padding: 0 11px; background: var(--brand); color: #fff; font-size: 10px; font-weight: 700; box-shadow: 0 2px 5px #7a202522; }
+.puja-kit-items-heading>button:hover { border-color: var(--brand-dark); background: var(--brand-dark); }
+.puja-kit-items-table { width: 100%; border-collapse: separate; border-spacing: 0 5px; table-layout: fixed; text-align: left; }
+.puja-kit-items-table thead { background: transparent; }
+.puja-kit-items-table th { height: auto; padding: 8px 9px; background: #f4f5f7; color: #626775; font-size: 10px; font-weight: 700; letter-spacing: 0; text-transform: none; white-space: normal; }
+.puja-kit-items-table th:first-child { width: 40%; border-radius: 6px 0 0 6px; }
+.puja-kit-items-table th:nth-child(2) { width: 42%; }
+.puja-kit-items-table th:last-child { width: 18%; border-radius: 0 6px 6px 0; }
+.puja-kit-items-table td { height: auto; padding: 2px 3px; border-top: 0; color: var(--text); font-size: 10px; vertical-align: middle; white-space: normal; }
+.puja-kit-items-table td:first-child { padding-left: 0; }
+.puja-kit-items-table td:last-child { padding-right: 0; text-align: right; }
+.puja-kit-items-table td input { display: block; width: 100%; min-width: 0; height: 36px; border: 1px solid #dfe2e8; border-radius: 6px; outline: 0; padding: 0 9px; background: #fff; color: var(--text); font-size: 10px; white-space: normal; }
+.puja-kit-items-table td input::placeholder { color: #a0a5af; }
+.puja-kit-items-table td input:focus { border-color: #9c5556; box-shadow: 0 0 0 2px #7a202510; }
+.puja-kit-items-table td button { display: inline-grid; width: 30px; height: 30px; place-items: center; border: 1px solid #f0d9d8; border-radius: 6px; padding: 0; background: #fff7f6; color: #a13a36; font-size: 19px; line-height: 1; }
+.puja-kit-items-table td button:hover { border-color: #d7a5a3; background: #ffefee; }
+.puja-kit-items-table .puja-kit-items-empty { padding: 14px 10px; border: 1px dashed #dfe2e8; border-radius: 6px; color: var(--muted); font-size: 10px; line-height: 1.5; text-align: center; white-space: normal; }
 .puja-kit-active-toggle { display: flex; align-items: center; gap: 7px; margin-bottom: 13px; color: #555b67; font-size: 10px; }
 .puja-kit-active-toggle input { accent-color: var(--brand); }
 .puja-kit-image-control { display: grid; justify-items: start; gap: 7px; margin: -4px 0 13px; }
@@ -360,4 +382,9 @@ td { height: 61px; padding: 8px 18px; border-top: 1px solid #f0f1f4; color: #646
   .puja-kit-manager .category-editor,.puja-kit-list-panel { padding: 13px; }
   .puja-kit-list-row { gap: 5px; }
   .puja-kit-list-row>button { font-size: 8px; }
+  .puja-kit-items-heading { align-items: flex-start; }
+  .puja-kit-items-heading>button { min-height: 32px; padding-inline: 9px; }
+  .puja-kit-items-table th { padding: 8px 5px; font-size: 9px; }
+  .puja-kit-items-table td input { height: 35px; padding: 0 6px; font-size: 9px; }
+  .puja-kit-items-table td button { width: 27px; height: 27px; }
 }

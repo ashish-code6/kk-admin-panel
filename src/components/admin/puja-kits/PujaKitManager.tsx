@@ -8,7 +8,7 @@ import {
   uploadAdminPujaKitGalleryImage,
   uploadAdminPujaKitImage,
 } from "@/lib/admin-api";
-import type { AdminPujaKit } from "@/types/admin";
+import type { AdminPujaKit, PujaKitItem } from "@/types/admin";
 
 type KitDraft = Omit<AdminPujaKit, "id" | "imagePublicId"> & { id?: string };
 
@@ -16,6 +16,7 @@ const emptyDraft: KitDraft = {
   name: "",
   description: "",
   includes: "",
+  kitItems: [],
   price: 1,
   originalPrice: null,
   rating: null,
@@ -90,6 +91,7 @@ export default function PujaKitManager({ token }: PujaKitManagerProps) {
       name: kit.name,
       description: kit.description,
       includes: kit.includes,
+      kitItems: kit.kitItems.map((kitItem) => ({ ...kitItem })),
       price: kit.price,
       originalPrice: kit.originalPrice,
       rating: kit.rating,
@@ -118,6 +120,32 @@ export default function PujaKitManager({ token }: PujaKitManagerProps) {
   function updateDraft<K extends keyof KitDraft>(key: K, value: KitDraft[K]) {
     setDraft((current) => ({ ...current, [key]: value }));
     setNotice("");
+  }
+
+  function updateKitItem(index: number, key: keyof PujaKitItem, value: string) {
+    setDraft((current) => ({
+      ...current,
+      kitItems: current.kitItems.map((kitItem, itemIndex) =>
+        itemIndex === index ? { ...kitItem, [key]: value } : kitItem,
+      ),
+    }));
+    setNotice("");
+  }
+
+  function addKitItem() {
+    if (draft.kitItems.length >= 30) {
+      setError("A kit can have up to 30 item rows.");
+      return;
+    }
+    setError("");
+    updateDraft("kitItems", [...draft.kitItems, { item: "", quantity: "" }]);
+  }
+
+  function removeKitItem(index: number) {
+    updateDraft(
+      "kitItems",
+      draft.kitItems.filter((_, itemIndex) => itemIndex !== index),
+    );
   }
 
   function chooseImage(event: ChangeEvent<HTMLInputElement>) {
@@ -171,13 +199,17 @@ export default function PujaKitManager({ token }: PujaKitManagerProps) {
       return;
     }
     const galleryImagesToUpload = selectedGalleryImages;
+    const kitPayload = {
+      ...draft,
+      includes: draft.kitItems.map(({ item }) => item.trim()).filter(Boolean).join(", ").slice(0, 500),
+    };
     setIsSaving(true);
     try {
       if (draft.id) {
         const publishAfterImageUpload = draft.isActive;
         const hasImageChanges = Boolean(imageToUpload || galleryImagesToUpload.length);
         let saved = await saveAdminPujaKit(token, {
-          ...draft,
+          ...kitPayload,
           isActive: hasImageChanges ? false : draft.isActive,
         });
         setKits((current) =>
@@ -197,7 +229,7 @@ export default function PujaKitManager({ token }: PujaKitManagerProps) {
         }
         if (hasImageChanges) {
           saved = await saveAdminPujaKit(token, {
-            ...draft,
+            ...kitPayload,
             imageUrl: saved.imageUrl,
             galleryImages: saved.galleryImages,
             isActive: publishAfterImageUpload,
@@ -216,7 +248,7 @@ export default function PujaKitManager({ token }: PujaKitManagerProps) {
           return;
         }
         const saved = await saveAdminPujaKit(token, {
-          ...draft,
+          ...kitPayload,
           imageUrl: null,
           galleryImages: [],
           isActive: false,
@@ -238,7 +270,7 @@ export default function PujaKitManager({ token }: PujaKitManagerProps) {
             );
           }
           const published = await saveAdminPujaKit(token, {
-            ...draft,
+            ...kitPayload,
             id: saved.id,
             imageUrl: latest.imageUrl,
             galleryImages: latest.galleryImages,
@@ -348,17 +380,69 @@ export default function PujaKitManager({ token }: PujaKitManagerProps) {
               onChange={(event) => updateDraft("description", event.target.value)}
             />
           </label>
-          <label className="puja-kit-field">
-            <span>What’s included</span>
-            <textarea
-              value={draft.includes}
-              maxLength={500}
-              required
-              rows={3}
-              onChange={(event) => updateDraft("includes", event.target.value)}
-            />
-            <small>Enter one item per line for the kit detail popup.</small>
-          </label>
+          <div className="puja-kit-items-editor">
+            <div className="puja-kit-items-heading">
+              <div>
+                <strong>Items &amp; quantities</strong>
+                <small>Shown as a table in the storefront popup.</small>
+              </div>
+              <button type="button" onClick={addKitItem}>Add item</button>
+            </div>
+            <table className="puja-kit-items-table">
+              <thead>
+                <tr>
+                  <th scope="col">Item</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {draft.kitItems.length === 0 ? (
+                  <tr>
+                    <td className="puja-kit-items-empty" colSpan={3}>
+                      No items yet. Select “Add item” to enter the kit contents.
+                    </td>
+                  </tr>
+                ) : (
+                  draft.kitItems.map((kitItem, index) => (
+                    <tr key={`kit-item-${index}`}>
+                      <td>
+                        <input
+                          value={kitItem.item}
+                          maxLength={100}
+                          placeholder="Item name"
+                          required
+                          aria-label={`Kit item ${index + 1}`}
+                          onChange={(event) => updateKitItem(index, "item", event.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          value={kitItem.quantity}
+                          maxLength={60}
+                          placeholder="Quantity"
+                          required
+                          aria-label={`Quantity for kit item ${index + 1}`}
+                          onChange={(event) =>
+                            updateKitItem(index, "quantity", event.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          aria-label={`Remove ${kitItem.item || `item ${index + 1}`}`}
+                          onClick={() => removeKitItem(index)}
+                        >
+                          ×
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
           <div className="category-field-row">
             <label className="category-field">
               <span>Price (₹)</span>
