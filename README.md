@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KALASH & KUMKUM Admin
 
-## Getting Started
+## Run locally
 
-First, run the development server:
+1. Copy `.env.example` to `.env.local`; set `NEXT_PUBLIC_API_URL=http://localhost:5000/api`.
+2. Configure `ADMIN_URL=http://localhost:3001` in the backend `.env`.
+3. Set `ADMIN_EMAIL` and a unique `ADMIN_PASSWORD` (6–128 characters) in that file.
+4. From `kk-backend`, run `npm run admin:create`.
+5. Start the API with `npm run dev`.
+6. From `kk-admin-panel`, run `npm ci`, then `npm run dev` and open `http://localhost:3001`.
+7. Sign in with the administrator account configured above.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Code organization
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `src/app` contains the Next.js route entry point and global styles.
+- `src/components/admin` contains the login, dashboard, customer table, and admin layout components.
+- `src/components/admin/categories` manages storefront categories and nested subcategories.
+- `src/hooks` contains admin UI and data-loading state.
+- `src/lib` contains API access and formatting helpers.
+- `src/types` and `src/constants` contain shared admin data types and settings.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The overview metrics, customer table, homepage banner editor, and category manager use authenticated `/api/admin` endpoints. The Catalog sidebar dropdown contains Categories and Homepage banners. Banner and category image uploads use the backend Cloudinary integration; configure Cloudinary in the backend `.env` and apply the database migrations. The storefront reads active carousel slides from `/api/banners` and the category tree, including uploaded images, from `/api/categories`. Category management supports two levels; product-to-category assignments are not included yet.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The admin session is held in browser session storage and is cleared when you sign out or close the session.
 
-## Learn More
+## GitHub and deployment
 
-To learn more about Next.js, take a look at the following resources:
+Commit the application source, `public/` assets, `package.json`, `package-lock.json`,
+TypeScript/Next.js configuration, `.gitignore`, `.env.example`, and this README.
+Do not commit `.env.local` or other real environment files, `.npmrc`, credentials,
+`node_modules/`, `.next/`, build output, or TypeScript build caches. `.env.example`
+contains only a local API URL; set `NEXT_PUBLIC_API_URL` to your deployed backend
+URL in your hosting provider's environment settings. This value is public in the
+browser bundle, so never put secrets in `NEXT_PUBLIC_*` variables.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For a clean install and production build, run `npm ci` and `npm run build`.
