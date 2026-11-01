@@ -33,7 +33,12 @@ export type AdminSession = {
   email: string;
 };
 
-export type ActiveSection = "overview" | "customers" | "banners" | "categories";
+export type ActiveSection =
+  | "overview"
+  | "customers"
+  | "banners"
+  | "categories"
+  | "puja-kits";
 
 export type AdminCategory = {
   id: string;
@@ -58,6 +63,24 @@ export type AdminBanner = {
   imagePublicId: string | null;
   isActive: boolean;
   updatedAt: string;
+};
+
+export type AdminPujaKit = {
+  id: string;
+  name: string;
+  description: string;
+  includes: string;
+  price: number;
+  originalPrice: number | null;
+  rating: number | null;
+  reviewCount: number | null;
+  tag: string;
+  deliveryInfo: string;
+  imageUrl: string | null;
+  galleryImages: string[];
+  imagePublicId: string | null;
+  sortOrder: number;
+  isActive: boolean;
 };
 
 export type ApiResponse<T> = {

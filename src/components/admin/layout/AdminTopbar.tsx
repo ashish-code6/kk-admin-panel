@@ -35,7 +35,9 @@ export default function AdminTopbar({
               ? "Customers"
               : activeSection === "banners"
                 ? "Homepage banners"
-                : "Categories"}
+                : activeSection === "puja-kits"
+                  ? "Puja Kits"
+                  : "Categories"}
         </strong>
       </div>
       <div className="topbar-actions">

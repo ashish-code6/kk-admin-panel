@@ -4,6 +4,7 @@ import CustomersTable from "@/components/admin/customers/CustomersTable";
 import DashboardOverview from "@/components/admin/dashboard/DashboardOverview";
 import BannerManager from "@/components/admin/banners/BannerManager";
 import CategoryManager from "@/components/admin/categories/CategoryManager";
+import PujaKitManager from "@/components/admin/puja-kits/PujaKitManager";
 import type {
   ActiveSection,
   AdminUser,
@@ -58,7 +59,9 @@ export default function AdminPageContent({
                 ? "Customers"
                 : activeSection === "banners"
                   ? "Homepage banners"
-                  : "Categories"}
+                    : activeSection === "puja-kits"
+                      ? "Puja Kits"
+                      : "Categories"}
           </h1>
           <p>
             {isOverview
@@ -67,7 +70,9 @@ export default function AdminPageContent({
                 ? "View and search customer accounts registered with your store."
                 : activeSection === "banners"
                   ? "Manage the two slides shown in your storefront homepage carousel."
-                  : "Organize Shop by Category and create nested subcategories."}
+                  : activeSection === "puja-kits"
+                    ? "Create, update, and publish the kits shown on your storefront."
+                    : "Organize Shop by Category and create nested subcategories."}
           </p>
         </div>
         <span className="live-pill"><i /> Live data</span>
@@ -100,6 +105,7 @@ export default function AdminPageContent({
       )}
       {activeSection === "banners" && <BannerManager token={adminToken} />}
       {isCategories && <CategoryManager token={adminToken} />}
+      {activeSection === "puja-kits" && <PujaKitManager token={adminToken} />}
       <footer className="page-footer">
         <span>© {new Date().getFullYear()} KALASH &amp; KUMKUM</span>
         <span>Admin workspace <i /> Secure connection</span>

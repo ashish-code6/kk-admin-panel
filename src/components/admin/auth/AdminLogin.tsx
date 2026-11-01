@@ -26,8 +26,10 @@ export default function AdminLogin({
     <main className="login-shell">
       <section className="login-brand-panel">
         <div className="login-brand">
-          <span className="brand-symbol">ॐ</span>
-          <span>KALASH <b>&amp;</b> KUMKUM</span>
+          <img
+            src="/kk-logo-transparent.png"
+            alt="KALASH & KUMKUM — Tradition Delivered with Devotion"
+          />
         </div>
         <div className="login-brand-copy">
           <span className="overline">ADMINISTRATION</span>
@@ -38,7 +40,11 @@ export default function AdminLogin({
       </section>
       <section className="login-form-panel">
         <form className="login-card" onSubmit={handleSubmit}>
-          <span className="login-mobile-mark">ॐ &nbsp; KALASH &amp; KUMKUM</span>
+          <img
+            className="login-mobile-mark"
+            src="/kk-logo-transparent.png"
+            alt="KALASH & KUMKUM — Tradition Delivered with Devotion"
+          />
           <span className="overline">WELCOME BACK</span>
           <h2>Sign in to your workspace</h2>
           <p>Use your administrator account to continue.</p>

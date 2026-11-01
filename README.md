@@ -15,11 +15,12 @@
 - `src/app` contains the Next.js route entry point and global styles.
 - `src/components/admin` contains the login, dashboard, customer table, and admin layout components.
 - `src/components/admin/categories` manages storefront categories and nested subcategories.
+- `src/components/admin/puja-kits` manages kit names, descriptions, prices, images, badges, visibility, and display order.
 - `src/hooks` contains admin UI and data-loading state.
 - `src/lib` contains API access and formatting helpers.
 - `src/types` and `src/constants` contain shared admin data types and settings.
 
-The overview metrics, customer table, homepage banner editor, and category manager use authenticated `/api/admin` endpoints. The Catalog sidebar dropdown contains Categories and Homepage banners. Banner and category image uploads use the backend Cloudinary integration; configure Cloudinary in the backend `.env` and apply the database migrations. The storefront reads active carousel slides from `/api/banners` and the category tree, including uploaded images, from `/api/categories`. Category management supports two levels; product-to-category assignments are not included yet.
+The overview metrics, customer table, homepage banner editor, category manager, and puja kit manager use authenticated `/api/admin` endpoints. The Catalog sidebar dropdown contains Puja Kits, Categories, and Homepage banners. Banner, category, and kit image uploads use the backend Cloudinary integration; configure Cloudinary in the backend `.env` and apply the database migrations. The storefront reads active carousel slides from `/api/banners`, the category tree from `/api/categories`, and published kits from `/api/puja-kits`. Category management supports two levels; product-to-category assignments are not included yet.
 
 The admin session is held in browser session storage and is cleared when you sign out or close the session.
 

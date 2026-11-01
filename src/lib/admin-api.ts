@@ -2,6 +2,7 @@ import { ADMIN_SESSION_KEY } from "@/constants/admin";
 import type {
   AdminBanner,
   AdminCategory,
+  AdminPujaKit,
   AdminSession,
   ApiResponse,
 } from "@/types/admin";
@@ -151,6 +152,64 @@ export function uploadAdminCategoryImage(
     token,
     { method: "POST", body: image },
   );
+}
+
+export function getAdminPujaKits(token: string) {
+  return adminApiRequest<AdminPujaKit[]>("/admin/puja-kits", token);
+}
+
+export function saveAdminPujaKit(
+  token: string,
+  kit: Omit<AdminPujaKit, "id" | "imagePublicId"> & { id?: string },
+) {
+  const { id, ...body } = kit;
+  return adminMutation<AdminPujaKit>(
+    id ? `/admin/puja-kits/${encodeURIComponent(id)}` : "/admin/puja-kits",
+    token,
+    {
+      method: id ? "PUT" : "POST",
+      body: JSON.stringify(body),
+    },
+  );
+}
+
+export function uploadAdminPujaKitImage(
+  token: string,
+  id: string,
+  image: File,
+) {
+  return adminMutation<AdminPujaKit>(
+    `/admin/puja-kits/${encodeURIComponent(id)}/image`,
+    token,
+    { method: "POST", body: image },
+  );
+}
+
+export function uploadAdminPujaKitGalleryImage(
+  token: string,
+  id: string,
+  image: File,
+) {
+  return adminMutation<AdminPujaKit>(
+    `/admin/puja-kits/${encodeURIComponent(id)}/gallery`,
+    token,
+    { method: "POST", body: image },
+  );
+}
+
+export async function deleteAdminPujaKit(token: string, id: string) {
+  const response = await fetch(
+    `${API_BASE_URL}/admin/puja-kits/${encodeURIComponent(id)}`,
+    {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    },
+  );
+  const payload = (await response.json()) as ApiResponse<undefined>;
+  if (!response.ok || !payload.success) {
+    throw new Error(payload.message || "Unable to delete puja kit.");
+  }
 }
 
 export async function deleteAdminCategory(token: string, id: string) {

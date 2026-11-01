@@ -28,14 +28,18 @@ export default function AdminSidebar({
   onSignOut,
 }: AdminSidebarProps) {
   const isCatalogSection =
-    activeSection === "categories" || activeSection === "banners";
+    activeSection === "categories" ||
+    activeSection === "banners" ||
+    activeSection === "puja-kits";
   const [catalogOpen, setCatalogOpen] = useState(isCatalogSection);
 
   return (
     <aside className={`admin-sidebar${isOpen ? " sidebar-open" : ""}`}>
       <a className="sidebar-brand" href="#" onClick={(event) => event.preventDefault()}>
-        <span className="brand-symbol">ॐ</span>
-        <span className="brand-name">KALASH <b>&amp;</b> KUMKUM<small>ADMIN CONSOLE</small></span>
+        <img
+          src="/kk-logo-transparent.png"
+          alt="KALASH & KUMKUM — Admin Console"
+        />
       </a>
       <div className="sidebar-store">
         <span className="store-avatar">K</span>
@@ -70,6 +74,13 @@ export default function AdminSidebar({
         </button>
         {catalogOpen && (
           <div className="sidebar-subnav">
+            <button
+              type="button"
+              className={activeSection === "puja-kits" ? "subnav-item subnav-active" : "subnav-item"}
+              onClick={() => onSelectSection("puja-kits")}
+            >
+              Puja Kits
+            </button>
             <button
               type="button"
               className={activeSection === "categories" ? "subnav-item subnav-active" : "subnav-item"}
